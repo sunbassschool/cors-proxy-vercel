@@ -6,6 +6,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Missing URL' });
   }
 
+  // Décoder l'URL avant de l'utiliser
+  const decodedUrl = decodeURIComponent(targetUrl);
+  
   // Autoriser le CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -14,7 +17,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end(); // CORS preflight OK
 
   try {
-    const response = await fetch(targetUrl, {
+    const response = await fetch(decodedUrl, {
       method: req.method,
       headers: {
         'Content-Type': 'application/json',
